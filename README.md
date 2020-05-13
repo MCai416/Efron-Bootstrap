@@ -12,7 +12,7 @@ Resampling Methods by the Bootstrap
 
 Plans for the future: 
   1) Time series 
-    AR(p) bootstrap (-m+n residuals)
-    Nonparametric Moving Block (Circular) 
-  2) Order statistics (non regular case)
+    AR(p) bootstrap, (-m+n residuals)
+    Nonparametric Moving Block (Circular and Stationary) 
+  2) Order statistics (non regular case (m-over-n bootstrap))
   3) Subsampling (not really bootstrap but a good comparison) 
