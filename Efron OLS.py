@@ -187,7 +187,7 @@ def Summarize(displayvar=False):
     if displayvar == True:
         print("Variance:")
         print(var_beta)
-    print("95%% Confidence Interval:")
+    print("%.0f %% Confidence Interval:"%(100*(1-alpha)))
     print("b1: [%.4f, %.4f]"%(b_true_l[0],b_true_u[0]))
     print("b2: [%.4f, %.4f]"%(b_true_l[1],b_true_u[1]))
     print("\nSample:")
