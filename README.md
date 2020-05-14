@@ -6,8 +6,7 @@ Resampling Methods by the Bootstrap
   
 2)Efron OLS looks at residual, wild and pairwise bootstrap under linear regression (they are the same for nonlinear regressions)
   Setuup: heteroskedastic 
-  Result: performs exceptionally well under small sample, and consistently having a smaller confidence interval than asymptotic theory 
-    suggests that bootstrap is extracting more information from the sample than estimation using asymptotic theory 
+  Result: performs exceptionally well under small sample, and consistently having a smaller confidence interval than the sample bootstrap,   approaches to the true value faster
   Results displayed on "OLS.JPG"
 
 Plans for the future: 
