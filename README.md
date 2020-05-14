@@ -9,6 +9,8 @@ Resampling Methods by the Bootstrap
 Overall Bootstrap performs just as well as the estimators using asymptotic theory 
 The reason why bootstrap didn't perform better than asymptotic theory is because of information matrix. The estimators are the best given the specifications. But it is very surprising that bootstrap can perform just as well as asymptotic estimators. 
 
+Thus, for statistics that have complicated distribution, bootstrap is a good and simple way to provide distribution of the statistics. 
+
 Plans for the future: 
   1) Time series 
     AR(p) bootstrap, (-m+n residuals)
