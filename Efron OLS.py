@@ -17,7 +17,7 @@ import time
 #Init: True Population Simulation 
 print("Initializing")
 
-n = 20
+n = 100
 #requires more than 8 observations 
 
 #Build Model 
@@ -72,7 +72,7 @@ def varb(X, Y):
     invX = np.linalg.inv(x.transpose()@x)
     return invX@XOX@invX
 
-var_beta_hat = n**2/(n-1)*varb(x, y) #for an unbiased estimate
+var_beta_hat = n*varb(x, y) 
 rese1 = y - x@beta_hat
 rese = rese1 - np.mean(rese1)
 
@@ -152,11 +152,11 @@ b_bp_s1 = np.sort(b_bp[:,1])
 
 
 
-b_true_l = beta - z_u*np.diag(var_beta)
-b_true_u = beta - z_l*np.diag(var_beta)
+b_true_l = beta - z_u*np.diag(var_beta/n)
+b_true_u = beta - z_l*np.diag(var_beta/n)
 
-b_hat_l = beta - t_u*np.diag(var_beta)
-b_hat_u = beta - t_l*np.diag(var_beta)
+b_hat_l = beta - t_u*np.diag(var_beta_hat)
+b_hat_u = beta - t_l*np.diag(var_beta_hat)
 
 ind_l = np.int(alpha/2*B)-1
 ind_u = np.int((1-alpha/2)*B)-1
@@ -199,7 +199,7 @@ def Summarize(displayvar=False):
     print("%.0f %% Confidence Interval:"%(100*(1-alpha)))
     print("b1: [%.4f, %.4f]"%(b_hat_l[0],b_hat_u[0]))
     print("b2: [%.4f, %.4f]"%(b_hat_l[1],b_hat_u[1]))
-    """
+    
     print("\nResidual Bootstrap:")
     for i in range(beta.shape[0]):
         print("beta %d = %.2f"%(i+1, b_br_mean[i]))
@@ -209,7 +209,7 @@ def Summarize(displayvar=False):
     print("%.0f %% Confidence Interval:"%(100*(1-alpha)))
     print("b1: [%.4f, %.4f]"%(b_br_l0,b_br_u0))
     print("b2: [%.4f, %.4f]"%(b_br_l1,b_br_u1))
-    """
+    
     print("\nWild Bootstrap:")
     for i in range(beta.shape[0]):
         print("beta %d = %.2f"%(i+1, b_bw_mean[i]))
