@@ -13,7 +13,7 @@ Thus, for statistics that have complicated distribution, bootstrap is a good and
 
 Plans for the future: 
   1) Time series 
-    AR(p) bootstrap, (-m+n residuals)
+    AR(p) bootstrap, (-k+n residuals)
     Nonparametric Moving Block (Circular and Stationary) 
-  2) Order statistics (non regular case (m-over-n bootstrap))
+  2) Order statistics (non regular case (m=o(n) bootstrap))
   3) Subsampling (not really bootstrap but a good comparison) 
