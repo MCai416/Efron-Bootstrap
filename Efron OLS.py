@@ -17,7 +17,7 @@ import time
 #Init: True Population Simulation 
 print("Initializing")
 
-n = 20
+n = 100
 #requires more than 8 observations 
 
 #Build Model 
@@ -31,11 +31,11 @@ varx = np.array([[3, -1],[-1, 4]])
 x = np.random.multivariate_normal(meanx, varx, size = n)
 EXX = varx + meanx.reshape(beta.shape[0], 1) @ meanx.reshape(1, beta.shape[0])
 
-#heteroskedastic e but independent of x
+#heteroskedastic e but independent of x 
 #but since sigma is independent of x 
 #residual bootstrap is valid 
 
-"""
+
 sdsigma = 10
 meansigma = 10
 vare = np.random.normal(meansigma, sdsigma, size = n)
@@ -45,15 +45,15 @@ for i in range(n):
     
 #theoretical asymptotic variance
 var_beta = meansigma*np.linalg.inv(EXX)
-"""
 
+"""
 #Uniform e iid:
 ewidth = 5
 e = np.random.uniform(-ewidth,ewidth, size = n)
 vare = (2*ewidth)**2/12
 
 var_beta = vare*np.linalg.inv(EXX)
-
+"""
 
 #Get y samples
 y = x@beta + e
@@ -62,7 +62,7 @@ y = x@beta + e
 def OLSb(X, Y):
     return np.linalg.inv(X.transpose()@X)@X.transpose()@Y
 
-beta_hat = OLSb(x, y) #beta hat converges at around n = 100
+beta_hat = OLSb(x, y) 
 
 #estimate variance 
 def varb(X, Y):
@@ -80,7 +80,7 @@ rese = rese1 - np.mean(rese1)
 print("Init completed")
 
 #Bootstrap World
-B = 40000
+B = 100000
 m = n 
 # allow for m over n, but Wild bootstrap needs to be fixed 
 
@@ -90,12 +90,9 @@ b_bp = np.zeros([B, beta_hat.shape[0]])
 print("Calculating Pairwise Bootstrap")
 a = time.time()
 for i in range(B):
-    x_bp = np.zeros([m, 2])
-    y_bp = np.zeros(m)
-    for j in range(m):
-        int_ = np.random.randint(0, n-1)
-        x_bp[j] = x[int_]
-        y_bp[j] = y[int_]
+    int_ = np.random.randint(0, n-1, size = m)
+    x_bp = x[int_]
+    y_bp = y[int_]
     b_bp[i] = OLSb(x_bp, y_bp)
     
 b = time.time()
@@ -153,11 +150,11 @@ b_bp_s1 = np.sort(b_bp[:,1])
 
 
 
-b_true_l = beta - z_u*np.diag(var_beta/n)
-b_true_u = beta - z_l*np.diag(var_beta/n)
+b_true_l = beta - z_u*np.sqrt(np.diag(var_beta/n))
+b_true_u = beta - z_l*np.sqrt(np.diag(var_beta/n))
 
-b_hat_l = beta - t_u*np.diag(var_beta_hat/n)
-b_hat_u = beta - t_l*np.diag(var_beta_hat/n)
+b_hat_l = beta_hat - t_u*np.sqrt(np.diag(var_beta_hat/n))
+b_hat_u = beta_hat - t_l*np.sqrt(np.diag(var_beta_hat/n))
 
 ind_l = np.int(alpha/2*B)-1
 ind_u = np.int((1-alpha/2)*B)-1
