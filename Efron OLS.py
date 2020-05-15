@@ -14,11 +14,20 @@ import numpy as np
 import scipy.stats as ss
 import time
 
-#Init: True Population Simulation 
-print("Initializing")
 
-n = 100
-#requires more than 8 observations 
+#Data Simulation
+n = 1000
+#requires more than 8 observations
+
+#Display 
+nondegen = True 
+#nondegenerate distribution?
+
+#Bootstrap Samples
+B = 10000 
+m = n 
+# allow for m over n, but Wild bootstrap needs to be fixed 
+
 
 #Build Model 
 # parameter beta: y = x*beta + e
@@ -28,6 +37,8 @@ beta = np.array([5, 3])
 meanx = np.array([50, 20])
 varx = np.array([[3, -1],[-1, 4]])
 
+#Init: True Population Simulation 
+print("Initializing")
 x = np.random.multivariate_normal(meanx, varx, size = n)
 EXX = varx + meanx.reshape(beta.shape[0], 1) @ meanx.reshape(1, beta.shape[0])
 
@@ -80,9 +91,6 @@ rese = rese1 - np.mean(rese1)
 print("Init completed")
 
 #Bootstrap World
-B = 100000
-m = n 
-# allow for m over n, but Wild bootstrap needs to be fixed 
 
 #Pairwise Bootstrap 
 b_bp = np.zeros([B, beta_hat.shape[0]])
@@ -93,7 +101,10 @@ for i in range(B):
     int_ = np.random.randint(0, n-1, size = m)
     x_bp = x[int_]
     y_bp = y[int_]
-    b_bp[i] = OLSb(x_bp, y_bp)
+    if nondegen == True:
+        b_bp[i] = np.sqrt(m)*(OLSb(x_bp, y_bp) - beta_hat) + beta_hat # nondegenerate
+    else:
+        b_bp[i] = OLSb(x_bp, y_bp) # nondegenerate
     
 b = time.time()
 print("Pairwise Bootstrap calculation completed, time taken: %.2f s"%(b-a))
@@ -115,8 +126,12 @@ for i in range(B):
     z = np.random.normal(size = m)
     e_bw = np.abs(np.random.choice(rese, size = m))*z
     e_br = np.random.choice(rese1, size = m)
-    b_bw[i] = beta_hat + OLSb(x, e_bw)
-    b_br[i] = beta_hat + OLSb(x, e_br)
+    if nondegen == True:
+        b_bw[i] = beta_hat + np.sqrt(m)*OLSb(x, e_bw) #nondegenerate
+        b_br[i] = beta_hat + np.sqrt(m)*OLSb(x, e_br)
+    else: 
+        b_bw[i] = beta_hat + OLSb(x, e_bw) #nondegenerate
+        b_br[i] = beta_hat + OLSb(x, e_br)
     
 b = time.time()
 print("Wild/Residual Bootstrap calculation completed, time taken: %.2f s"%(b-a))
@@ -149,12 +164,16 @@ b_bw_s1 = np.sort(b_bw[:,1])
 b_bp_s1 = np.sort(b_bp[:,1])
 
 
-
-b_true_l = beta - z_u*np.sqrt(np.diag(var_beta/n))
-b_true_u = beta - z_l*np.sqrt(np.diag(var_beta/n))
-
-b_hat_l = beta_hat - t_u*np.sqrt(np.diag(var_beta_hat/n))
-b_hat_u = beta_hat - t_l*np.sqrt(np.diag(var_beta_hat/n))
+if nondegen == True:
+    b_true_l = beta - z_u*np.sqrt(np.diag(var_beta))
+    b_true_u = beta - z_l*np.sqrt(np.diag(var_beta))
+    b_hat_l = beta_hat - t_u*np.sqrt(np.diag(var_beta_hat))
+    b_hat_u = beta_hat - t_l*np.sqrt(np.diag(var_beta_hat))
+else: 
+    b_true_l = beta - z_u*np.sqrt(np.diag(var_beta/n))
+    b_true_u = beta - z_l*np.sqrt(np.diag(var_beta/n))
+    b_hat_l = beta_hat - t_u*np.sqrt(np.diag(var_beta_hat/n))
+    b_hat_u = beta_hat - t_l*np.sqrt(np.diag(var_beta_hat/n))
 
 ind_l = np.int(alpha/2*B)-1
 ind_u = np.int((1-alpha/2)*B)-1
