@@ -1,12 +1,16 @@
 # Resampling Methods by the Bootstrap 
 
-1)Efron-Naive looks at percentile bootstrap and t-stat bootstrap 
+1. Efron-Naive looks at percentile bootstrap and t-stat bootstrap 
+
   Results displayed on "Naive Average.JPG"
   
-2)Efron OLS looks at residual, wild and pairwise bootstrap under linear regression (they are the same for nonlinear regressions)
+2. Efron OLS looks at residual, wild and pairwise bootstrap under linear regression (they are the same for nonlinear regressions)
+
   Results displayed on "OLS.JPG"
 
-3)Parametric Bootstrap in the time domain: ARMA(p,q)/Sieve Bootstrap. Algorithm by Franke and Kreiss (1992) (Bootstrapping Stationary Autoregressive Moving-Average Models) 
+3. Parametric Bootstrap in the time domain: ARMA(p,q)/Sieve Bootstrap. Algorithm by Franke and Kreiss (1992) (Bootstrapping Stationary Autoregressive Moving-Average Models) 
+
+  Results displayed on "MA(1) Bootstrap.PNG", test sequence is an MA(1) process with beta = 0.356. 
 
 Overall Bootstrap performs just as well as the estimators using asymptotic theory 
 
