@@ -11,6 +11,8 @@
 3. Parametric Bootstrap in the time domain: ARMA(p,q)/Sieve Bootstrap. Algorithm by Franke and Kreiss (1992) (Bootstrapping Stationary Autoregressive Moving-Average Models) 
 
   Results displayed on "MA(1) Bootstrap.PNG", test sequence is an MA(1) process with beta = 0.356. 
+  
+# Comments 
 
 Overall Bootstrap performs just as well as the estimators using asymptotic theory 
 
