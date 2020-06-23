@@ -1,4 +1,4 @@
-Resampling Methods by the Bootstrap 
+# Resampling Methods by the Bootstrap 
 
 1)Efron-Naive looks at percentile bootstrap and t-stat bootstrap 
   Results displayed on "Naive Average.JPG"
